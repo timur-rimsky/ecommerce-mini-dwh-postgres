@@ -1,0 +1,46 @@
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Python cache / virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE / editor files
+.idea/
+
+# VS Code
+.vscode/*
+!.vscode/settings.json
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.swp
+
+# Database dumps / local exports
+*.dump
+*.sql.gz
+*.backup
+
+# Local data outputs
+data/processed/
+data/tmp/
+
+# Keep raw demo CSV files if they are part of the portfolio project
+# Do not ignore data/raw/*.csv

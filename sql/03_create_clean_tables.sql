@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS clean.clean_products (
     base_price NUMERIC(10, 2) NOT NULL CHECK (base_price > 0),
     created_at DATE CHECK (created_at <= CURRENT_DATE),
     source_staging_id BIGINT REFERENCES staging.stg_products(staging_id),
-    loaded_at TIMESTAMP NOT NULL DEFAULT NOW()
+    loaded_at TIMESTAMP NOT NULL DEFAULT now()
 );
 
 
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS clean.clean_orders (
     shipping_city TEXT NOT NULL,
     shipping_cost NUMERIC(10, 2) NOT NULL CHECK (shipping_cost >= 0),
     source_staging_id BIGINT REFERENCES staging.stg_orders(staging_id),
-    loaded_at TIMESTAMP NOT NULL DEFAULT NOW()
+    loaded_at TIMESTAMP NOT NULL DEFAULT now()
 );
 
 
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS clean.clean_order_items (
     unit_price NUMERIC(10, 2) NOT NULL CHECK (unit_price > 0),
     line_total NUMERIC(10, 2) NOT NULL CHECK (line_total >= 0),
     source_staging_id BIGINT REFERENCES staging.stg_order_items(staging_id),
-    loaded_at TIMESTAMP NOT NULL DEFAULT NOW()
+    loaded_at TIMESTAMP NOT NULL DEFAULT now()
 );
 
 
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS clean.clean_user_events (
     event_time TIMESTAMP NOT NULL,
     product_id BIGINT REFERENCES clean.clean_products(product_id),
     source_staging_id BIGINT REFERENCES staging.stg_user_events(staging_id),
-    loaded_at TIMESTAMP NOT NULL DEFAULT NOW()
+    loaded_at TIMESTAMP NOT NULL DEFAULT now()
 );
 
 
@@ -77,5 +77,5 @@ CREATE TABLE IF NOT EXISTS clean.clean_ab_test_assignments (
     variant TEXT NOT NULL CHECK (variant IN ('A', 'B')),
     assigned_at TIMESTAMP NOT NULL,
     source_staging_id BIGINT REFERENCES staging.stg_ab_test_assignments(staging_id),
-    loaded_at TIMESTAMP NOT NULL DEFAULT NOW()
+    loaded_at TIMESTAMP NOT NULL DEFAULT now()
 );

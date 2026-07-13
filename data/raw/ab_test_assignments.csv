@@ -1,0 +1,11 @@
+assignment_id,user_id,experiment_name,variant,assigned_at
+7001,1001,free_shipping_test,A,2024-07-01 09:00:00
+7002,1002,free_shipping_test,B,2024-07-01 09:05:00
+7003,1003,free_shipping_test,A,2024-07-01 09:10:00
+7004,1004,free_shipping_test,B,2024-07-01 09:15:00
+7005,1005,free_shipping_test,A,2024-07-01 09:20:00
+7006,1006,free_shipping_test,B,2024-07-01 09:25:00
+7007,1007,free_shipping_test,A,2024-07-01 09:30:00
+7008,1008,free_shipping_test,B,2024-07-01 09:35:00
+7009,1009,free_shipping_test,A,2024-07-01 09:40:00
+7010,1010,free_shipping_test,B,2024-07-01 09:45:00

@@ -1,3 +1,12 @@
+-- Data Quality Checks for E-commerce Mini DWH.
+-- Each query returns problematic rows.
+-- Expected result for a successful run: 0 rows for each check.
+
+
+-- ============================================================
+-- Dimension checks: dwh.dim_users
+-- ============================================================
+
 -- Check 1: duplicate external_user_id
 SELECT
     external_user_id,
@@ -45,6 +54,10 @@ SELECT
 FROM dwh.dim_users
 WHERE updated_at < created_at;
 
+
+-- ============================================================
+-- Dimension checks: dwh.dim_products
+-- ============================================================
 
 -- Check 5: duplicate external_product_id
 SELECT
@@ -99,6 +112,10 @@ SELECT
 FROM dwh.dim_products
 WHERE updated_at < created_at;
 
+
+-- ============================================================
+-- Fact checks: dwh.fact_orders
+-- ============================================================
 
 -- Check 10: duplicate external_order_id
 SELECT
@@ -184,6 +201,10 @@ WHERE
     d.date_sk IS NULL;
 
 
+-- ============================================================
+-- Fact checks: dwh.fact_order_items
+-- ============================================================
+
 -- Check 16: duplicate external_order_item_id
 SELECT
     external_order_item_id,
@@ -261,6 +282,10 @@ WHERE
     p.product_sk IS NULL;
 
 
+-- ============================================================
+-- Fact checks: dwh.fact_user_events
+-- ============================================================
+
 -- Check 22: duplicate external_event_id
 SELECT
     external_event_id,
@@ -329,6 +354,10 @@ WHERE
     (e.product_sk IS NOT NULL AND p.product_sk IS NULL) OR
     d.date_sk IS NULL;
 
+
+-- ============================================================
+-- Fact checks: dwh.fact_ab_assignments
+-- ============================================================
 
 -- Check 27: duplicate external_assignment_id
 SELECT

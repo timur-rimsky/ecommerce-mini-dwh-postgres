@@ -1,5 +1,11 @@
+-- Create clean / ODS tables.
+-- Clean tables store validated and typed data loaded from staging.
+-- Business keys from source data are used as primary keys in this layer.
+
+
+-- Clean users
 CREATE TABLE IF NOT EXISTS clean.clean_users (
-    user_id BIGINT NOT NULL UNIQUE,
+    user_id BIGINT PRIMARY KEY,
     name TEXT NOT NULL,
     birth_date DATE CHECK (birth_date <= CURRENT_DATE),
     city TEXT NOT NULL,
@@ -9,8 +15,9 @@ CREATE TABLE IF NOT EXISTS clean.clean_users (
 );
 
 
+-- Clean products
 CREATE TABLE IF NOT EXISTS clean.clean_products (
-    product_id BIGINT NOT NULL UNIQUE,
+    product_id BIGINT PRIMARY KEY,
     product_name TEXT NOT NULL,
     category TEXT NOT NULL,
     base_price NUMERIC(10, 2) NOT NULL CHECK (base_price > 0),
@@ -20,18 +27,13 @@ CREATE TABLE IF NOT EXISTS clean.clean_products (
 );
 
 
+-- Clean orders
 CREATE TABLE IF NOT EXISTS clean.clean_orders (
-    order_id BIGINT NOT NULL UNIQUE,
+    order_id BIGINT PRIMARY KEY,
     user_id BIGINT NOT NULL REFERENCES clean.clean_users(user_id),
     order_date TIMESTAMP NOT NULL,
     order_status TEXT NOT NULL CHECK (
-        order_status IN (
-            'created',
-            'paid',
-            'cancelled',
-            'refunded',
-            'delivered'
-        )
+        order_status IN ('created', 'paid', 'cancelled', 'refunded', 'delivered')
     ),
     shipping_city TEXT NOT NULL,
     shipping_cost NUMERIC(10, 2) NOT NULL CHECK (shipping_cost >= 0),
@@ -40,8 +42,9 @@ CREATE TABLE IF NOT EXISTS clean.clean_orders (
 );
 
 
+-- Clean order items
 CREATE TABLE IF NOT EXISTS clean.clean_order_items (
-    order_item_id BIGINT NOT NULL UNIQUE,
+    order_item_id BIGINT PRIMARY KEY,
     order_id BIGINT NOT NULL REFERENCES clean.clean_orders(order_id),
     product_id BIGINT NOT NULL REFERENCES clean.clean_products(product_id),
     quantity INTEGER NOT NULL CHECK (quantity > 0),
@@ -52,16 +55,13 @@ CREATE TABLE IF NOT EXISTS clean.clean_order_items (
 );
 
 
+-- Clean user events
+-- product_id is nullable because not all events are product-level events.
 CREATE TABLE IF NOT EXISTS clean.clean_user_events (
-    event_id BIGINT NOT NULL UNIQUE,
+    event_id BIGINT PRIMARY KEY,
     user_id BIGINT NOT NULL REFERENCES clean.clean_users(user_id),
     event_type TEXT NOT NULL CHECK (
-        event_type IN (
-            'view_product',
-            'add_to_cart',
-            'checkout',
-            'purchase'
-        )
+        event_type IN ('view_product', 'add_to_cart', 'checkout', 'purchase')
     ),
     event_time TIMESTAMP NOT NULL,
     product_id BIGINT REFERENCES clean.clean_products(product_id),
@@ -70,8 +70,9 @@ CREATE TABLE IF NOT EXISTS clean.clean_user_events (
 );
 
 
+-- Clean A/B test assignments
 CREATE TABLE IF NOT EXISTS clean.clean_ab_test_assignments (
-    assignment_id BIGINT NOT NULL UNIQUE,
+    assignment_id BIGINT PRIMARY KEY,
     user_id BIGINT NOT NULL REFERENCES clean.clean_users(user_id),
     experiment_name TEXT NOT NULL,
     variant TEXT NOT NULL CHECK (variant IN ('A', 'B')),

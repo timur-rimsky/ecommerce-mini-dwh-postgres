@@ -1,3 +1,11 @@
+-- Load fact tables from clean layer and dimension tables.
+-- Fact tables use surrogate keys from DWH dimensions.
+
+
+-- Load fact_orders
+-- Grain: one row per order.
+-- order_total_amount and items_count are calculated from clean.clean_order_items.
+
 INSERT INTO dwh.fact_orders (
     external_order_id,
     user_sk,
@@ -40,6 +48,10 @@ SET
     updated_at = now();
 
 
+-- Load fact_order_items
+-- Grain: one row per order line item.
+-- Links each order item to order and product surrogate keys.
+
 INSERT INTO dwh.fact_order_items (
     external_order_item_id,
     order_sk,
@@ -68,6 +80,10 @@ SET
     updated_at = now();
 
 
+-- Load fact_user_events
+-- Grain: one row per user event.
+-- product_sk is nullable because not all events are product-level events.
+
 INSERT INTO dwh.fact_user_events (
     external_event_id,
     user_sk,
@@ -95,6 +111,9 @@ SET
     event_time = EXCLUDED.event_time,
     event_type = EXCLUDED.event_type;
 
+
+-- Load fact_ab_assignments
+-- Grain: one row per user assignment to an A/B test variant.
 
 INSERT INTO dwh.fact_ab_assignments (
     external_assignment_id,

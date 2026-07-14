@@ -1,3 +1,11 @@
+-- Load dimension tables from clean layer to DWH layer.
+-- Dimensions use surrogate keys as primary keys and external source IDs as business keys.
+
+
+-- Load dim_users
+-- Source business key: clean.clean_users.user_id
+-- DWH business key: dwh.dim_users.external_user_id
+
 INSERT INTO dwh.dim_users (
     external_user_id,
     name,
@@ -20,6 +28,10 @@ SET
     registration_date = EXCLUDED.registration_date,
     updated_at = now();
 
+
+-- Load dim_products
+-- Source business key: clean.clean_products.product_id
+-- DWH business key: dwh.dim_products.external_product_id
 
 INSERT INTO dwh.dim_products (
     external_product_id,
